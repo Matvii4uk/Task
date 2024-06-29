@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\Gambler;
 use App\Models\Game;
 use App\Models\Link;
+use Carbon\Carbon;
 
 
 class TaskController extends Controller
@@ -27,7 +28,9 @@ class TaskController extends Controller
 
     public function show(Link $link, Gambler $gambler)
     {
-        if ($link->expires_at < Carbon::now()) {
+        $expires_at = Carbon::parse($link->expires_at);
+
+        if ($expires_at < Carbon::now()) {
             throw new \Exception('Link expired');
         }
 
